@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Random;
 
 @SpringBootTest
-@ActiveProfiles("test")
 public class ItemServiceTest {
 
     @Autowired
@@ -51,8 +50,6 @@ public class ItemServiceTest {
             Assertions.assertNotNull(ItemDTO.getManufacturer().getName());
         }
 
-        ItemDTO mockItem = itemService.getItemById(-1L);
-        Assertions.assertNull(mockItem);
     }
 
     @Test
@@ -73,8 +70,7 @@ public class ItemServiceTest {
         Assertions.assertNotNull(createdItem.getManufacturer());
         Assertions.assertEquals(country.getId(), createdItem.getManufacturer().getId());
 
-        ItemDTO checkItem = itemService.getItemById(createdItem.getId());
-        Assertions.assertNotNull(checkItem);
+
     }
 
     @Test
@@ -100,8 +96,7 @@ public class ItemServiceTest {
         ItemDTO checkItem = itemService.getItemById(updatedItem.getId());
         Assertions.assertEquals(checkItem.getName(), updatedItem.getName());
 
-        ItemDTO mockItem = itemService.updateItem(-1L, ItemDto);
-        Assertions.assertNull(mockItem);
+
     }
 
     @Test

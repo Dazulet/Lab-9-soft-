@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
-@ActiveProfiles("test")
 public class CountryMapperTest {
 
     @Autowired

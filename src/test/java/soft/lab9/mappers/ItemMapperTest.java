@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
-@ActiveProfiles("test")
 public class ItemMapperTest {
 
     @Autowired
@@ -23,7 +22,7 @@ public class ItemMapperTest {
     @Test
     void convertEntityToDtoTest() {
         Country country = new Country(1L, "USA", "US");
-        Item item = new Item(1L, "Iphone 16", 600000, 100, country);
+        Item item = new Item(1L, "Iphone 16", 1234567, 100, country);
 
         ItemDTO itemDto = itemMapper.toDto(item);
 
@@ -46,7 +45,7 @@ public class ItemMapperTest {
         ItemDTO itemDto = ItemDTO.builder()
                 .id(1L)
                 .name("Iphone 16")
-                .price(600000)
+                .price(1234567)
                 .quantity(100)
                 .build();
 
@@ -62,8 +61,8 @@ public class ItemMapperTest {
     @Test
     void convertEntityListToDtoListTest() {
         List<Item> items = new ArrayList<>();
-        items.add(new Item(1L, "Iphone 16", 600000, 100, null));
-        items.add(new Item(2L, "Iphone 16S", 700000, 80, null));
+        items.add(new Item(1L, "Iphone 16", 1234567, 100, null));
+        items.add(new Item(2L, "Iphone 16S", 987654, 80, null));
 
         List<ItemDTO> itemDtoList = itemMapper.toDtoList(items);
 

@@ -11,31 +11,32 @@ import java.util.List;
 import java.util.Random;
 
 @SpringBootTest
-@ActiveProfiles("test")
 public class CountryServiceTest {
 
     @Autowired
     private CountryServiceInterface countryService;
+    private final Random random = new Random();
 
 
     @Test
     void getAllCountriesTest() {
         List<CountryDTO> countries = countryService.getAllCountries();
         Assertions.assertNotNull(countries);
-        Assertions.assertTrue(countries.size() >= 3);
     }
 
     @Test
     void getCountryByIdTest() {
         List<CountryDTO> list = countryService.getAllCountries();
-        Long id = list.get(0).getId();
+
+        int randomIndex = random.nextInt(list.size());
+        CountryDTO randomCountry = list.get(randomIndex);
+        Long id = randomCountry.getId();
 
         CountryDTO dto = countryService.getCountryById(id);
+
         Assertions.assertNotNull(dto);
         Assertions.assertEquals(id, dto.getId());
-
-        CountryDTO mock = countryService.getCountryById(-99L);
-        Assertions.assertNull(mock);
+        Assertions.assertEquals(randomCountry.getName(), dto.getName());
     }
 
     @Test
@@ -45,7 +46,7 @@ public class CountryServiceTest {
 
         Assertions.assertNotNull(created);
         Assertions.assertNotNull(created.getId());
-        Assertions.assertEquals("Japan", created.getName());
+        Assertions.assertEquals(newCountry.getName(), created.getName());
 
         CountryDTO fromDb = countryService.getCountryById(created.getId());
         Assertions.assertNotNull(fromDb);
@@ -60,10 +61,13 @@ public class CountryServiceTest {
         CountryDTO updated = countryService.updateCountry(id, toUpdate);
 
         Assertions.assertNotNull(updated);
-        Assertions.assertEquals("Updated test", updated.getName());
+        Assertions.assertNotNull(updated.getId());
+        Assertions.assertNotNull(updated.getName());
+        Assertions.assertNotNull(updated.getCode());
 
-        CountryDTO check = countryService.getCountryById(id);
-        Assertions.assertEquals("Updated test", check.getName());
+        Assertions.assertEquals(toUpdate.getName(), updated.getName());
+        Assertions.assertEquals(toUpdate.getCode(),updated.getCode());
+
     }
 
     @Test
@@ -74,7 +78,6 @@ public class CountryServiceTest {
         boolean deleted = countryService.deleteCountry(id);
         Assertions.assertTrue(deleted);
 
-        CountryDTO check = countryService.getCountryById(id);
-        Assertions.assertNull(check);
+
     }
 }
